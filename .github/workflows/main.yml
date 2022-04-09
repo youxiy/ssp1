@@ -1,0 +1,29 @@
+name: 'SSPanel_Checkin'
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: '0 1,4,6 * * *'
+
+env:
+    AIRPORTURL: ${{secrets.AIRPORTURL}}
+    USERPASSWD: ${{secrets.USERPASSWD}}
+    USERNAME: ${{secrets.USERNAME}}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+        with:
+          ref: main
+      - name: Setup Python
+        uses: actions/setup-python@v2
+      - name: Install
+        run: pip install requests beautifulsoup4
+      - name: run
+        run: python AirportSign.py
